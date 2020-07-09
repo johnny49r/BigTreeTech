@@ -45,7 +45,7 @@ VSCode with the PlatformIO IDE installed.
 
 Conditions of this specific hardware environment:
 1) The BTT board thermistor input has a 4.7K pullup resistor.
-2) The E3D PT100 amplifier has a 100 ohm output series termination resistor.
+2) The E3D PT100 amplifier has a fixed gain of 10 and has a 100 ohm output series termination resistor.
 
 The above are taken into account using the calculations below.
 
@@ -60,18 +60,30 @@ The values in the table were derived using a standard PT100 thermocouple resista
 table available online.
 
 Constants:
-   Vref = 3.30V
-   Rb = 4400 (total series resistance of the two bridge resistors in the INA826 circuit)
-   Rpu = 4700 (pullup resistor on the BTT thermistor input)
-   Ramp = 100 (INA826 amp output buffer resistor)
-   RTD = Resistance @ temperature from a PT100 thermocouple table. Example 111 ohms at 25C.
+
+   > Vref = 3.30V
+   
+   > Rb = 4400 (total series resistance of the two bridge resistors in the INA826 circuit)
+   
+   > Rpu = 4700 (pullup resistor on the BTT thermistor input)
+   
+   > Ramp = 100 (INA826 amp output buffer resistor)
+   
+   > RTD = Resistance @ temperature from a PT100 thermocouple table. Example 111 ohms at 25C.
+   
       
-a) Calculate Vo : output of the INA826 amplifier in the E3D circuit.
-   Vo = ((Vref / (RTD + Rb)) * RTD) * 10
-b) Next calculate Vadc : output voltage with a 4.7K pullup to 3.3V and a 100 ohm series output resistor.
-   Vadc = (((Vref - Vo) / Rpu) * Ramp) + Vo
-c) Lastly calculate ADC digital value for each point in the array table (10 bit ADC, 0 - 1023).
-   ADC = (Vadc / Vref) * 1024
+      
+A) Calculate Vo : output of the INA826 amplifier in the E3D circuit.
+   
+   > Vo = ((Vref / (RTD + Rb)) * RTD) * 10
+   
+B) Next calculate Vadc : output voltage with a 4.7K pullup to 3.3V and a 100 ohm series output resistor.
+   
+   > Vadc = (((Vref - Vo) / Rpu) * Ramp) + Vo
+   
+C) Lastly calculate ADC digital value for each point in the array table (10 bit ADC, 0 - 1023).
+   
+   > ADC = (Vadc / Vref) * 1024
 
 NOTE: These calculations can be easily modified to accomodate other hardware combinations.
 
